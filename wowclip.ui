@@ -1,0 +1,126 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ui version="4.0">
+ <class>WowClip</class>
+ <widget class="QMainWindow" name="WowClip">
+  <property name="geometry">
+   <rect>
+    <x>0</x>
+    <y>0</y>
+    <width>306</width>
+    <height>336</height>
+   </rect>
+  </property>
+  <property name="windowTitle">
+   <string>Clipboarder</string>
+  </property>
+  <property name="styleSheet">
+   <string notr="true">*{
+font: 9pt &quot;微软雅黑&quot;;
+}
+QPushButton{
+padding:5px;
+border:none;
+}
+QPushButton:hover{
+background-color:#FFFFFF;
+}
+QListWidget
+{
+border:none;
+padding:0px;
+}
+QScrollBar:vertical{                                                          background:#FFFFFF;
+ padding-top:20px;                                                       padding-bottom:20px;                                                       padding-left:3px;                                                       padding-right:3px;  
+ border-left:1px solid #d7d7d7;} QScrollBar::handle:vertical{
+ background:#dbdbdb; 
+border-radius:6px;                                                            min-height:80px;}
+QScrollBar::handle:vertical:hover{
+ background:#d0d0d0;}  
+QScrollBar::add-line:vertical{
+ background:#FFFFFF;}                                                          QScrollBar::sub-line:vertical{
+background:#FFFFFF;
+}
+
+QMainWindow
+{
+border-radius:15px
+}
+QListWidgetItem
+{
+padding:0px;
+}
+QToolTip{
+        border: 1px solid rgb(111, 156, 207);
+        background: white;
+        color: rgb(51, 51, 51);
+}</string>
+  </property>
+  <widget class="QWidget" name="centralWidget">
+   <widget class="QFrame" name="frame_main">
+    <property name="geometry">
+     <rect>
+      <x>0</x>
+      <y>0</y>
+      <width>306</width>
+      <height>336</height>
+     </rect>
+    </property>
+    <property name="styleSheet">
+     <string notr="true">QFrame{
+background-color: #E6E6FA;
+}</string>
+    </property>
+    <property name="frameShape">
+     <enum>QFrame::StyledPanel</enum>
+    </property>
+    <property name="frameShadow">
+     <enum>QFrame::Raised</enum>
+    </property>
+    <widget class="QStackedWidget" name="stackedWidget">
+     <property name="geometry">
+      <rect>
+       <x>0</x>
+       <y>0</y>
+       <width>306</width>
+       <height>336</height>
+      </rect>
+     </property>
+     <property name="styleSheet">
+      <string notr="true">QStackedWidget{
+padding:0px;
+}</string>
+     </property>
+     <property name="currentIndex">
+      <number>0</number>
+     </property>
+     <widget class="QWidget" name="page_history">
+      <widget class="QListWidget" name="listWidget">
+       <property name="geometry">
+        <rect>
+         <x>0</x>
+         <y>20</y>
+         <width>306</width>
+         <height>316</height>
+        </rect>
+       </property>
+       <property name="autoFillBackground">
+        <bool>false</bool>
+       </property>
+       <property name="styleSheet">
+        <string notr="true">QFrame{
+background-color: #FFFFFF;opacity:0.5
+}</string>
+       </property>
+      </widget>
+     </widget>
+     <widget class="QWidget" name="page_star">
+      <layout class="QVBoxLayout" name="verticalLayout_4"/>
+     </widget>
+    </widget>
+   </widget>
+  </widget>
+ </widget>
+ <layoutdefault spacing="6" margin="11"/>
+ <resources/>
+ <connections/>
+</ui>

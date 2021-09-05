@@ -1,0 +1,8 @@
+<RCC>
+    <qresource prefix="/">
+        <file alias="logo">icon/clipboard_39.683168316832px_1208025_easyicon.net.png</file>
+    </qresource>
+    <qresource prefix="/menu_tray">
+        <file alias="home">icon/home_16px_1181940_easyicon.net.png</file>
+    </qresource>
+</RCC>
