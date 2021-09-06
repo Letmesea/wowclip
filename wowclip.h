@@ -5,6 +5,7 @@
 #include <QMenu>
 #include <QSystemTrayIcon>
 #include <QMouseEvent>
+#include <QAction>
 
 QT_BEGIN_NAMESPACE
 namespace Ui { class WowClip; }
@@ -34,5 +35,6 @@ private:
     virtual void mouseReleaseEvent(QMouseEvent *event);
 private slots:
      void hotKey_Ctrlq();
+     void createSysTrayActions();
 };
 #endif // WOWCLIP_H

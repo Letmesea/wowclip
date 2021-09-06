@@ -6,8 +6,8 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>306</width>
-    <height>336</height>
+    <width>448</width>
+    <height>490</height>
    </rect>
   </property>
   <property name="windowTitle">
@@ -61,8 +61,8 @@ QToolTip{
      <rect>
       <x>0</x>
       <y>0</y>
-      <width>306</width>
-      <height>336</height>
+      <width>448</width>
+      <height>490</height>
      </rect>
     </property>
     <property name="styleSheet">
@@ -81,8 +81,8 @@ background-color: #E6E6FA;
       <rect>
        <x>0</x>
        <y>0</y>
-       <width>306</width>
-       <height>336</height>
+       <width>448</width>
+       <height>490</height>
       </rect>
      </property>
      <property name="styleSheet">
@@ -99,8 +99,8 @@ padding:0px;
         <rect>
          <x>0</x>
          <y>20</y>
-         <width>306</width>
-         <height>316</height>
+         <width>448</width>
+         <height>470</height>
         </rect>
        </property>
        <property name="autoFillBackground">

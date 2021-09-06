@@ -8,7 +8,7 @@ WowClip::WowClip(QWidget *parent)
 
     ui->setupUi(this);
     setWindowFlags(
-//                Qt::Tool
+                Qt::Tool|
                 Qt::NoDropShadowWindowHint
                 |Qt::WindowStaysOnTopHint
                 |Qt::WindowTitleHint
@@ -20,6 +20,7 @@ WowClip::WowClip(QWidget *parent)
     setWindowOpacity(0.85);
     if(!QSystemTrayIcon::isSystemTrayAvailable())
         return;
+    createSysTrayActions();
     system_tray ->setToolTip(tr("WowClip 1.0"));
     system_tray ->setIcon(QIcon("://mlogo5"));
     system_tray->setContextMenu(menu_tray);
@@ -27,8 +28,21 @@ WowClip::WowClip(QWidget *parent)
     system_tray->show();
 //    system_tray->showMessage(tr("wowclip"),QString(tr("wowclip已启动")));
 }
+/**
+创建系统托盘菜单动作*/
+void WowClip::createSysTrayActions()
+{
 
+    QAction *action_quit = new QAction(this);
 
+    action_quit->setIcon(QIcon("://out"));
+
+    action_quit->setText(tr("退出"));
+
+    menu_tray->addAction(action_quit);
+
+    connect(action_quit, SIGNAL(triggered(bool)), qApp, SLOT(quit()));
+}
 void WowClip:: hotKey_Ctrlq( ){
     if  (isShow){
         this->hide();
