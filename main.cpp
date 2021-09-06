@@ -10,6 +10,7 @@ int main(int argc, char *argv[])
 
     MyGlobalShortCut *shortcut_Ctrlq = new MyGlobalShortCut("Ctrl+q",&w);
     QObject::connect(shortcut_Ctrlq,SIGNAL(activated()),&w,SLOT(hotKey_Ctrlq()));
+    w.setWindowIcon(QIcon("://mlogo5"));
 //    w.hide();
     return a.exec();
 }

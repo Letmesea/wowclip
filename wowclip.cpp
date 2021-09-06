@@ -7,22 +7,25 @@ WowClip::WowClip(QWidget *parent)
 {
 
     ui->setupUi(this);
-    setWindowFlags(Qt::WindowTitleHint|Qt::WindowSystemMenuHint|
-                   Qt::WindowCloseButtonHint|Qt::FramelessWindowHint);
+    setWindowFlags(
+//                Qt::Tool
+                Qt::NoDropShadowWindowHint
+                |Qt::WindowStaysOnTopHint
+                |Qt::WindowTitleHint
+                |Qt::WindowSystemMenuHint
+                |Qt::WindowCloseButtonHint
+                |Qt::FramelessWindowHint);
     setAttribute(Qt::WA_TranslucentBackground);
 
-//    setWindowOpacity(0.9);
+    setWindowOpacity(0.85);
     if(!QSystemTrayIcon::isSystemTrayAvailable())
         return;
     system_tray ->setToolTip(tr("WowClip 1.0"));
-    system_tray ->setIcon(QIcon("://logo"));
+    system_tray ->setIcon(QIcon("://mlogo5"));
     system_tray->setContextMenu(menu_tray);
 
     system_tray->show();
-    system_tray->showMessage(tr("wowclip"),
-                             QString(tr("wowclip已启动")));
-//    setWindowFlags(Qt::Tool);
-//    this->hide();
+//    system_tray->showMessage(tr("wowclip"),QString(tr("wowclip已启动")));
 }
 
 
