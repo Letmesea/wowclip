@@ -21,7 +21,9 @@ public:
 
 private:
     Ui::WowClip *ui;
+    //系统托盘图标与提示
     QSystemTrayIcon *system_tray = new QSystemTrayIcon(this);
+    //系统托盘菜单
     QMenu *menu_tray = new QMenu(this);
 
     bool mMoveing;
