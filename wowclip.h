@@ -6,7 +6,8 @@
 #include <QSystemTrayIcon>
 #include <QMouseEvent>
 #include <QAction>
-
+#include <QApplication>
+#include <dosth.h>
 QT_BEGIN_NAMESPACE
 namespace Ui { class WowClip; }
 QT_END_NAMESPACE
@@ -21,6 +22,9 @@ public:
 
 private:
     Ui::WowClip *ui;
+    const QClipboard *board = QApplication::clipboard();
+    //类型数据
+    const QMimeData *mimeData ;
     //系统托盘图标与提示
     QSystemTrayIcon *system_tray = new QSystemTrayIcon(this);
     //系统托盘菜单
@@ -38,5 +42,6 @@ private:
 private slots:
      void hotKey_Ctrlq();
      void createSysTrayActions();
+     void addItem();
 };
 #endif // WOWCLIP_H

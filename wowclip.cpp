@@ -17,7 +17,7 @@ WowClip::WowClip(QWidget *parent)
                 |Qt::FramelessWindowHint);
     setAttribute(Qt::WA_TranslucentBackground);
 
-    setWindowOpacity(0.85);
+//    setWindowOpacity(0.85);
     if(!QSystemTrayIcon::isSystemTrayAvailable())
         return;
     createSysTrayActions();
@@ -26,8 +26,16 @@ WowClip::WowClip(QWidget *parent)
     system_tray->setContextMenu(menu_tray);
 
     system_tray->show();
+    addItem();
 //    system_tray->showMessage(tr("wowclip"),QString(tr("wowclip已启动")));
 }
+void WowClip:: addItem(){
+    Dosth *widget = new Dosth(this);
+    QListWidgetItem *item_ui = new QListWidgetItem("",ui->listWidget);
+    ui->listWidget->addItem(item_ui);
+    ui->listWidget->setItemWidget(item_ui, widget);
+    item_ui->setSizeHint(QSize(widget->width(),widget->height()));
+};
 /**
 创建系统托盘菜单动作*/
 void WowClip::createSysTrayActions()

@@ -19,12 +19,14 @@ SOURCES += \
     MyGlobalShortCut.cpp \
     MyWinEventFilter.cpp \
     main.cpp \
-    wowclip.cpp
+    wowclip.cpp \
+    dosth.cpp
 
 HEADERS += \
     MyGlobalShortCut.h \
     MyWinEventFilter.h \
-    wowclip.h
+    wowclip.h \
+    dosth.h
 
 FORMS += \
     wowclip.ui
