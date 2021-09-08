@@ -7,6 +7,8 @@ WowClip::WowClip(QWidget *parent)
 {
 
     ui->setupUi(this);
+    connect(board, SIGNAL(changed(QClipboard::Mode)),
+           this, SLOT(listenClipChanged()));
     setWindowFlags(
                 Qt::Tool|
                 Qt::NoDropShadowWindowHint
@@ -26,8 +28,12 @@ WowClip::WowClip(QWidget *parent)
     system_tray->setContextMenu(menu_tray);
 
     system_tray->show();
-    addItem();
+
+//    addItem();
 //    system_tray->showMessage(tr("wowclip"),QString(tr("wowclip已启动")));
+}
+void WowClip::listenClipChanged(){
+
 }
 void WowClip:: addItem(){
     Dosth *widget = new Dosth(this);
