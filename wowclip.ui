@@ -11,7 +11,7 @@
    </rect>
   </property>
   <property name="windowTitle">
-   <string>Clipboarder</string>
+   <string>WowClip</string>
   </property>
   <property name="styleSheet">
    <string notr="true">*{
@@ -67,7 +67,7 @@ QToolTip{
     </property>
     <property name="styleSheet">
      <string notr="true">QFrame{
-background-color: #E6E6FA;
+background-color: #2A333C;
 }</string>
     </property>
     <property name="frameShape">
@@ -108,7 +108,7 @@ padding:0px;
        </property>
        <property name="styleSheet">
         <string notr="true">QFrame{
-background-color: #FFFFFF;opacity:0.5
+background-color: #2A333C;opacity:0.5
 }</string>
        </property>
       </widget>

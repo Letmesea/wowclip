@@ -9,6 +9,9 @@
 #include <QApplication>
 #include <dosth.h>
 #include <QClipboard>
+#include <QListWidgetItem>
+
+#include <QMimeData>
 
 QT_BEGIN_NAMESPACE
 namespace Ui { class WowClip; }
@@ -23,9 +26,9 @@ public:
 
 private:
     Ui::WowClip *ui;
-     QClipboard *board = QApplication::clipboard();
+     const QClipboard *board = QApplication::clipboard();
     //类型数据
-     QMimeData *mimeData ;
+     const QMimeData *mimeData ;
     //系统托盘图标与提示
     QSystemTrayIcon *system_tray = new QSystemTrayIcon(this);
     //系统托盘菜单
@@ -45,5 +48,6 @@ private slots:
      void createSysTrayActions();
      void addItem();
      void listenClipChanged();
+     void on_listWidget_currentItemChanged(QListWidgetItem *current, QListWidgetItem *previous);
 };
 #endif // WOWCLIP_H

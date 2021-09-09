@@ -24,10 +24,10 @@ Dosth::Dosth(QWidget *parent)
     lineEdit->setWordWrapMode(QTextOption::WrapAnywhere);
     lineEdit->setAttribute(Qt::WA_TranslucentBackground);
     lineEdit->setSizePolicy(QSizePolicy::Expanding,QSizePolicy::Expanding);
-    lineEdit->setFocusPolicy(Qt::FocusPolicy::ClickFocus);
+//    lineEdit->setFocusPolicy(Qt::FocusPolicy::ClickFocus);
+    stackedWidget->setStyleSheet("background-color:#F8F8FF;border-width: 3px;border-color: #E1FFFF; border-style: solid;");
     lineEdit->installEventFilter(this);
     lineEdit->setAcceptRichText(true);
-
     stackedWidget->addWidget(label);
     stackedWidget->addWidget(lineEdit);
 
@@ -45,11 +45,6 @@ Dosth::Dosth(QWidget *parent)
 }
 bool Dosth::eventFilter(QObject * obj, QEvent * evt) {
 
-    if  (obj==lineEdit){
-        if  (evt->type()==QEvent::MouseButtonDblClick){
-
-        }
-    }
 
 //    if (obj == qb)
 //    {

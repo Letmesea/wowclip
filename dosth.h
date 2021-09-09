@@ -13,7 +13,7 @@
 #include <QPointer>
 #include<QHBoxLayout>
 #include<QTextBrowser>
-
+#include <QDebug>
 /**
  * @brief 可编辑的项
  */
@@ -26,7 +26,7 @@ protected:
 private:
     QPointer<QStackedWidget> stackedWidget;
         QPointer<QLabel> label;
-        QPointer<QTextBrowser> qb;
+//        QPointer<QTextBrowser> qb;
         QPointer<QTextEdit> lineEdit;
         //水平
         QHBoxLayout *hBoxLayout;

@@ -32,14 +32,28 @@ WowClip::WowClip(QWidget *parent)
 //    addItem();
 //    system_tray->showMessage(tr("wowclip"),QString(tr("wowclip已启动")));
 }
+/**
+ * @brief WowClip::listenClipChanged
+ * 监听剪贴板变化
+ */
 void WowClip::listenClipChanged(){
-
+    qDebug()<<"clip change";
+    mimeData = board->mimeData();
+    qDebug()<<mimeData;
+    if(mimeData->hasText()){
+        qDebug()<<mimeData->text()<<endl;
+    }
+    if(mimeData->hasImage()){
+        qDebug()<<mimeData->imageData()<<endl;
+    }
 }
+
 void WowClip:: addItem(){
     Dosth *widget = new Dosth(this);
     QListWidgetItem *item_ui = new QListWidgetItem("",ui->listWidget);
     ui->listWidget->addItem(item_ui);
     ui->listWidget->setItemWidget(item_ui, widget);
+    qDebug()<<"widget宽度"<<widget->width()<<"widget高度"<<widget->height();
     item_ui->setSizeHint(QSize(widget->width(),widget->height()));
 };
 /**
@@ -95,3 +109,14 @@ void WowClip::mouseReleaseEvent(QMouseEvent *event)
 {
     mMoveing = false;
 }
+
+void WowClip::on_listWidget_currentItemChanged(QListWidgetItem *current, QListWidgetItem *previous)
+{
+    if(current){
+        qDebug()<<"颜色"<<current->backgroundColor().rgb();
+    }
+    if(previous){
+        qDebug()<<previous->backgroundColor();
+    }
+}
+
