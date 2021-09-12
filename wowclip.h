@@ -12,6 +12,11 @@
 #include <QListWidgetItem>
 
 #include <QMimeData>
+#include <QDir>
+#include <QFile>
+#include <cstring>
+#include <QtNetwork/QtNetwork>
+
 
 QT_BEGIN_NAMESPACE
 namespace Ui { class WowClip; }
@@ -27,6 +32,7 @@ public:
 private:
     Ui::WowClip *ui;
      const QClipboard *board = QApplication::clipboard();
+     const QClipboard::Mode mode = QClipboard::Clipboard;
     //类型数据
      const QMimeData *mimeData ;
     //系统托盘图标与提示
@@ -43,11 +49,15 @@ private:
     virtual void mousePressEvent(QMouseEvent *event);
     virtual void mouseMoveEvent(QMouseEvent *event);
     virtual void mouseReleaseEvent(QMouseEvent *event);
+    QString dealImgUrl(const QString &str);
 private slots:
      void hotKey_Ctrlq();
      void createSysTrayActions();
      void addItem();
-     void listenClipChanged();
-     void on_listWidget_currentItemChanged(QListWidgetItem *current, QListWidgetItem *previous);
+     void listenClipChanged(QClipboard::Mode mode_);
+     void on_listWidget_currentItemChanged(QListWidgetItem *current,
+                                           QListWidgetItem *previous);
+     void saveData(const QString &data);
+     void slot_replyFinished(QNetworkReply* reply);
 };
 #endif // WOWCLIP_H

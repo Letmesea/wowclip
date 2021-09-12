@@ -175,6 +175,7 @@ quint32 MyGlobalShortCut::nativeKeycode(Qt::Key key)
     case Qt::Key_X:
     case Qt::Key_Y:
     case Qt::Key_Z:
+    case Qt::Key_QuoteLeft:
         return key;
 
     default:

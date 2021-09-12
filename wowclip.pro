@@ -1,4 +1,4 @@
-QT       += core gui
+QT       += core gui network
 
 greaterThan(QT_MAJOR_VERSION, 4): QT += widgets
 
@@ -25,6 +25,7 @@ SOURCES += \
 HEADERS += \
     MyGlobalShortCut.h \
     MyWinEventFilter.h \
+    html_parser.h \
     wowclip.h \
     dosth.h
 
