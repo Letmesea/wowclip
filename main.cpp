@@ -28,7 +28,7 @@ int main(int argc, char *argv[])
 //    qDebug()<<s.npos;
     QApplication a(argc, argv);
     WowClip w;
-    w.show();
+    w.hide();
 
     MyGlobalShortCut *shortcut_Ctrlq = new MyGlobalShortCut("Ctrl+q",&w);
     QObject::connect(shortcut_Ctrlq,SIGNAL(activated()),&w,SLOT(hotKey_Ctrlq()));
