@@ -16,7 +16,7 @@
 #include <QFile>
 #include <cstring>
 #include <QtNetwork/QtNetwork>
-
+#include <QDesktopWidget>
 
 QT_BEGIN_NAMESPACE
 namespace Ui { class WowClip; }

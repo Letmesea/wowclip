@@ -27,7 +27,7 @@ WowClip::WowClip(QWidget *parent)
     system_tray->setContextMenu(menu_tray);
 
     system_tray->show();
-
+//    this->move ((QApplication::desktop()->width() - this->width())/2+100,(QApplication::desktop()->height() - this->height())/2);
 //    addItem();
 //    system_tray->showMessage(tr("wowclip"),QString(tr("wowclip已启动")));
 }
