@@ -49,8 +49,9 @@ void WowClip::listenClipChanged(QClipboard::Mode mode_){
 
         QPixmap pix = qvariant_cast<QPixmap>(mimeData->imageData());
         QString timeformat = QDateTime::currentDateTime().toString("yyyyMMddHHmmsszzz");
-        QString path = "D:/prj/my/qtobj/wowclip/save/";
-        QString fn = path+timeformat+".jpg";
+
+//        QString path = "D:/prj/my/qtobj/wowclip/save/";
+        QString fn = workdir+timeformat+".jpg";
         pix.save(fn);
         widget->setText("<img src=\""+fn+"\">");
         QListWidgetItem *item_ui = new QListWidgetItem("",ui->listWidget);
@@ -60,6 +61,7 @@ void WowClip::listenClipChanged(QClipboard::Mode mode_){
         item_ui->setSizeHint(QSize(widget->width(),widget->height()));
     }else if(mimeData->hasHtml()){
         QString res = dealImgUrl(mimeData->html());
+
         saveData(res);
         Dosth *widget = new Dosth(this);
         widget->setText(res);
@@ -141,11 +143,12 @@ QString WowClip::dealImgUrl(const QString &str){
              //找不到img标签结束符号
              break;
          }
-         std::string::size_type srcindex = stemp.find("src=\"") ;
+         //必须前面空格，否则可能有其他属性比如 data-src=""
+         std::string::size_type srcindex = stemp.find(" src=\"") ;
          if(srcindex==s.npos||srcindex>=endFlagIndex){
              continue;
          }
-         std::string::size_type start = temp+4+srcindex+5;
+         std::string::size_type start = temp+4+srcindex+6;
          std::string ftp = "ftp://";
           std::string ftps = "ftps://";
           std::string http = "http://";
@@ -170,6 +173,7 @@ QString WowClip::dealImgUrl(const QString &str){
              QEventLoop loop ;
              QNetworkAccessManager *qManager = new QNetworkAccessManager(this);
              QNetworkRequest request;
+//             resultq = "https://upload-images.jianshu.io/upload_images/4469129-fa3f54aecf6ef8a2.jpg";
              request.setUrl(QUrl(resultq));
              QNetworkReply *reply = qManager->get(request);
              connect(reply, SIGNAL(finished()), &loop, SLOT(quit()));
@@ -180,13 +184,27 @@ QString WowClip::dealImgUrl(const QString &str){
              pix.loadFromData(data);
 
 //             QDateTime time = QDateTime::currentDateTime();   //获取当前时间
-//             ulong timeT = time.toTime_t();   //将当前时间转为时间戳
+//             ulong timeT = time.toTime_t();   //将当前时间转为时间戳,有问题，精度丢失
              QString timeformat = QDateTime::currentDateTime().toString("yyyyMMddHHmmsszzz");
-             QString path = "D:/prj/my/qtobj/wowclip/save/";
-             QString fn = path+timeformat+".jpg";
+//             QString path = "D:/prj/my/qtobj/wowclip/save/";
+             QString fn = workdir+timeformat+".jpg";
              qDebug()<<fn<<endl;
 //             pix.save(fn, "JPG", 100);
-             pix.save(fn);
+
+             QDir  *folder=new QDir;
+
+             bool exist = folder->exists(workdir);
+             if(!exist){
+                 bool ok = folder->mkpath(workdir);
+                 if(ok){
+                     qDebug()<<"save picture:create dir success";
+                     pix.save(fn);
+                 }else{
+                     qDebug()<<"save picture:create dir error";
+                 }
+             }else{
+                 pix.save(fn);
+             }
 
              //替换
              s.replace(start,endFlagDbqte,fn.toStdString());
@@ -208,13 +226,13 @@ void WowClip:: saveData(const QString & data){
     //保存为TXT文件
     bool exist;
     QString fileName;
-     QString path = "D:/prj/my/qtobj/wowclip/save";
+//     QString path = "D:/prj/my/qtobj/wowclip/save";
     QDir  *folder=new QDir;
 
-    exist = folder->exists(path);
+    exist = folder->exists(workdir);
 
     if(!exist){
-        bool ok = folder->mkpath(path);
+        bool ok = folder->mkpath(workdir);
         if(ok){
             qDebug()<<"create dir success";
 //            QMessageBox::warning(this,tr("创建目录"),tr("创建成功!"));//添加提示方便查看是否成功创建
@@ -227,7 +245,7 @@ void WowClip:: saveData(const QString & data){
     QDateTime time = QDateTime::currentDateTime();   //获取当前时间
     uint timeT = time.toTime_t();   //将当前时间转为时间戳
 //    fileName = tr("C:/Users/Administrator/Desktop/wowclip/save/%1.txt").arg("数据");
-    fileName = path+tr("\\%1.txt").arg("数据");
+    fileName = workdir+tr("%1.txt").arg("数据");
 
     QFile f(fileName);
     if(!f.open(QIODevice::ReadWrite | QIODevice::Append | QIODevice::Text)){//追加写入 添加结束符\r\n

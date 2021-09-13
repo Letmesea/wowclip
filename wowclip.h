@@ -43,7 +43,7 @@ private:
     bool mMoveing;
     QPoint mMovePosition;
     int screen_center_x = 0;
-
+    QString workdir =QCoreApplication::applicationDirPath()+"/dataTemp/";
     bool isShow = true;
 
     virtual void mousePressEvent(QMouseEvent *event);

@@ -34,5 +34,6 @@ int main(int argc, char *argv[])
     QObject::connect(shortcut_Ctrlq,SIGNAL(activated()),&w,SLOT(hotKey_Ctrlq()));
     w.setWindowIcon(QIcon("://mlogo5"));
 //    w.hide();
+    qDebug()<<"curr work dir:"+QCoreApplication::applicationDirPath();
     return a.exec();
 }
