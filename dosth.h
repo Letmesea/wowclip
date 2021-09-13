@@ -22,6 +22,7 @@ class Dosth:public QWidget{
 public:
     Dosth(QWidget *parent = nullptr);
     void setText(QString text_);
+    void setImg();
 protected:
     bool eventFilter(QObject * obj, QEvent * e);
 private:

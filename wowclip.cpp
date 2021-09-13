@@ -40,29 +40,45 @@ void WowClip::listenClipChanged(QClipboard::Mode mode_){
     qDebug()<<"clip change";
     mimeData = board->mimeData();
     qDebug()<<mimeData;
-
-    if(mimeData->hasText()){
-        qDebug()<<mimeData->text()<<endl;
-    }
-    if(mimeData->hasImage()){
-        qDebug()<<mimeData->imageData()<<endl;
-    }
     if(mimeData->hasUrls()){
         qDebug()<<"url:"<<mimeData->urls()<<endl;
     }
-    if(mimeData->hasHtml()){
-        qDebug()<<"html:"<<mimeData->html()<<endl;
-        dealImgUrl(mimeData->html());
-//        saveData(mimeData->html());
+    if(mimeData->hasImage()){
+        qDebug()<<mimeData->imageData()<<endl;
         Dosth *widget = new Dosth(this);
-        widget->setText(mimeData->html());
+
+        QPixmap pix = qvariant_cast<QPixmap>(mimeData->imageData());
+        QString timeformat = QDateTime::currentDateTime().toString("yyyyMMddHHmmsszzz");
+        QString path = "D:/prj/my/qtobj/wowclip/save/";
+        QString fn = path+timeformat+".jpg";
+        pix.save(fn);
+        widget->setText("<img src=\""+fn+"\">");
+        QListWidgetItem *item_ui = new QListWidgetItem("",ui->listWidget);
+        ui->listWidget->addItem(item_ui);
+        ui->listWidget->setItemWidget(item_ui, widget);
+        qDebug()<<"widget width"<<widget->width()<<"widget height"<<widget->height();
+        item_ui->setSizeHint(QSize(widget->width(),widget->height()));
+    }else if(mimeData->hasHtml()){
+        QString res = dealImgUrl(mimeData->html());
+        saveData(res);
+        Dosth *widget = new Dosth(this);
+        widget->setText(res);
+        QListWidgetItem *item_ui = new QListWidgetItem("",ui->listWidget);
+        ui->listWidget->addItem(item_ui);
+        ui->listWidget->setItemWidget(item_ui, widget);
+        qDebug()<<"widget width"<<widget->width()<<"widget height"<<widget->height();
+        item_ui->setSizeHint(QSize(widget->width(),widget->height()));
+    }else /*if(mimeData->hasText())*/{
+        qDebug()<<mimeData->text()<<endl;
+        Dosth *widget = new Dosth(this);
+        widget->setText(mimeData->text());
         QListWidgetItem *item_ui = new QListWidgetItem("",ui->listWidget);
         ui->listWidget->addItem(item_ui);
         ui->listWidget->setItemWidget(item_ui, widget);
         qDebug()<<"widget width"<<widget->width()<<"widget height"<<widget->height();
         item_ui->setSizeHint(QSize(widget->width(),widget->height()));
     }
-//    QImage image = qvariant_cast<QImage>(mimeData->imageData());
+
 //    qDebug()<<"image:"<<image;
 }
 
@@ -114,7 +130,6 @@ QString WowClip::dealImgUrl(const QString &str){
 
         std::string s = str.toStdString();
     std::string::size_type position=0;
-//    std::string s = "<img alt=\"enter\"src=\"https://1.png\"     loading=\"lazy\" style=\"margin: 0px; padding: 0px; border: 0px; max-width: 700px; height: auto;\"></p>";
     std::string des = "<img";
     int idx=1;
     while ((position=s.find(des,position))!=s.npos) {
@@ -144,7 +159,7 @@ QString WowClip::dealImgUrl(const QString &str){
                  break;
              }
              std::string::size_type end = start + endFlagDbqte;
-             if(end>=endFlagIndex) {
+             if(end>=temp+4+endFlagIndex) {
                  continue;
              }
 
@@ -152,65 +167,72 @@ QString WowClip::dealImgUrl(const QString &str){
              QString resultq = QString::fromStdString(result);
              qDebug()<<resultq<<endl;
 
-             QUrl url(resultq);
-             QNetworkAccessManager *manager = new QNetworkAccessManager(this);
-             QEventLoop loop;
-             QNetworkReply *reply = manager->get(QNetworkRequest(url));
-             //请求结束并下载完成后，退出子事件循环
-             QObject::connect(reply, SIGNAL(finished()), &loop, SLOT(quit()));
-             //开启子事件循环
+             QEventLoop loop ;
+             QNetworkAccessManager *qManager = new QNetworkAccessManager(this);
+             QNetworkRequest request;
+             request.setUrl(QUrl(resultq));
+             QNetworkReply *reply = qManager->get(request);
+             connect(reply, SIGNAL(finished()), &loop, SLOT(quit()));
              loop.exec();
 
              QPixmap pix;
              QByteArray data = reply->readAll();
-             pix.loadFromData(data, "JPG");
+             pix.loadFromData(data);
 
-             QDateTime time = QDateTime::currentDateTime();   //获取当前时间
-             int timeT = time.toTime_t();   //将当前时间转为时间戳
-             QString path = "C:/Users/Administrator/Desktop/wowclip/save/";
-             QString fn = path+timeT+".jpg";
-             pix.save(fn, "JPG", 100);
+//             QDateTime time = QDateTime::currentDateTime();   //获取当前时间
+//             ulong timeT = time.toTime_t();   //将当前时间转为时间戳
+             QString timeformat = QDateTime::currentDateTime().toString("yyyyMMddHHmmsszzz");
+             QString path = "D:/prj/my/qtobj/wowclip/save/";
+             QString fn = path+timeformat+".jpg";
+             qDebug()<<fn<<endl;
+//             pix.save(fn, "JPG", 100);
+             pix.save(fn);
 
              //替换
              s.replace(start,endFlagDbqte,fn.toStdString());
 
              //替换为本地路径后，重新算endFlagIndex
+             stemp = s.substr(start);
+             std::string::size_type endFlagIndex = stemp.find(">") ;
 
-
-             position = temp+4+endFlagIndex+1;
+             position = start+endFlagIndex+1;
              qDebug()<<position<<endl;
           }else{
-             position = temp+4+endFlagIndex+1;
+             position = start+endFlagIndex+1;
           }
     }
+    return QString::fromStdString(s);
 }
 
 void WowClip:: saveData(const QString & data){
     //保存为TXT文件
     bool exist;
     QString fileName;
-    QDir *folder = new QDir;
-    exist = folder->exists("C:/Users/Administrator/Desktop/wowclip/save");
+     QString path = "D:/prj/my/qtobj/wowclip/save";
+    QDir  *folder=new QDir;
 
-    if(!exist){//不存在就创建
-        bool ok = folder->mkdir("C:/Users/Administrator/Desktop/wowclip/save");
+    exist = folder->exists(path);
+
+    if(!exist){
+        bool ok = folder->mkpath(path);
         if(ok){
-            qDebug()<<"创建目录,创建成功";
+            qDebug()<<"create dir success";
 //            QMessageBox::warning(this,tr("创建目录"),tr("创建成功!"));//添加提示方便查看是否成功创建
         }else{
-            qDebug()<<"创建目录,创建失败";
+            qDebug()<<"create dir error";
 //            QMessageBox::warning(this,tr("创建目录"),tr("创建失败"));
         }
     }
 
     QDateTime time = QDateTime::currentDateTime();   //获取当前时间
-    int timeT = time.toTime_t();   //将当前时间转为时间戳
-    fileName = tr("C:/Users/Administrator/Desktop/wowclip/save/%1.jpg").arg(timeT);
+    uint timeT = time.toTime_t();   //将当前时间转为时间戳
+//    fileName = tr("C:/Users/Administrator/Desktop/wowclip/save/%1.txt").arg("数据");
+    fileName = path+tr("\\%1.txt").arg("数据");
 
     QFile f(fileName);
     if(!f.open(QIODevice::ReadWrite | QIODevice::Append | QIODevice::Text)){//追加写入 添加结束符\r\n
 //         QMessageBox::warning(this,tr("错误"),tr("打开文件失败,数据保存失败"));
-        qDebug()<<"错误,打开文件失败,数据保存失败";
+        qDebug()<<"error,open file fail,data save fail";
         return ;
     }else{
         QTextStream stream(&f);
