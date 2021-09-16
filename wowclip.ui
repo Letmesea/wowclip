@@ -67,7 +67,7 @@ QToolTip{
     </property>
     <property name="styleSheet">
      <string notr="true">QFrame{
-background-color: #2A333C;
+background-color: #E8E8E8;
 }</string>
     </property>
     <property name="frameShape">
@@ -98,9 +98,9 @@ padding:0px;
        <property name="geometry">
         <rect>
          <x>0</x>
-         <y>20</y>
+         <y>29</y>
          <width>448</width>
-         <height>470</height>
+         <height>461</height>
         </rect>
        </property>
        <property name="autoFillBackground">
@@ -108,8 +108,25 @@ padding:0px;
        </property>
        <property name="styleSheet">
         <string notr="true">QFrame{
-background-color: #2A333C;opacity:0.5
+background-color: #E8E8E8;opacity:0.5
 }</string>
+       </property>
+      </widget>
+      <widget class="QPushButton" name="closeButton">
+       <property name="geometry">
+        <rect>
+         <x>400</x>
+         <y>0</y>
+         <width>51</width>
+         <height>31</height>
+        </rect>
+       </property>
+       <property name="text">
+        <string/>
+       </property>
+       <property name="icon">
+        <iconset resource="icon.qrc">
+         <normaloff>:/close1</normaloff>:/close1</iconset>
        </property>
       </widget>
      </widget>
@@ -121,6 +138,8 @@ background-color: #2A333C;opacity:0.5
   </widget>
  </widget>
  <layoutdefault spacing="6" margin="11"/>
- <resources/>
+ <resources>
+  <include location="icon.qrc"/>
+ </resources>
  <connections/>
 </ui>

@@ -27,6 +27,14 @@ WowClip::WowClip(QWidget *parent)
     system_tray->setContextMenu(menu_tray);
 
     system_tray->show();
+    //系统托盘事件
+    connect(system_tray,SIGNAL(activated(QSystemTrayIcon::ActivationReason)),
+            this,SLOT(on_activatedSysTrayIcon(QSystemTrayIcon::ActivationReason)));
+//    QFile file("://css/scrollbar");
+//    file.open(QFile::ReadOnly);
+//    ui->listWidget->verticalScrollBar()->setStyleSheet(file.readAll());
+//    file.close();
+
 //    this->move ((QApplication::desktop()->width() - this->width())/2+100,(QApplication::desktop()->height() - this->height())/2);
 //    addItem();
 //    system_tray->showMessage(tr("wowclip"),QString(tr("wowclip已启动")));
@@ -39,7 +47,6 @@ void WowClip::listenClipChanged(QClipboard::Mode mode_){
     if(mode_!=mode)return;
     qDebug()<<"clip change";
     mimeData = board->mimeData();
-    qDebug()<<mimeData;
     if(mimeData->hasUrls()){
         qDebug()<<"url:"<<mimeData->urls()<<endl;
     }
@@ -62,13 +69,15 @@ void WowClip::listenClipChanged(QClipboard::Mode mode_){
     }else if(mimeData->hasHtml()){
         QString res = dealImgUrl(mimeData->html());
 
-        saveData(res);
+//        saveData(res);
         Dosth *widget = new Dosth(this);
         widget->setText(res);
         QListWidgetItem *item_ui = new QListWidgetItem("",ui->listWidget);
         ui->listWidget->addItem(item_ui);
         ui->listWidget->setItemWidget(item_ui, widget);
+//        ui->listWidget->setStyleSheet("QListWidget::Item:hover{border:1px solid #2A333C;}");
         qDebug()<<"widget width"<<widget->width()<<"widget height"<<widget->height();
+//        qDebug()<<widget->styleSheet();
         item_ui->setSizeHint(QSize(widget->width(),widget->height()));
     }else /*if(mimeData->hasText())*/{
         qDebug()<<mimeData->text()<<endl;
@@ -264,16 +273,16 @@ void WowClip:: saveData(const QString & data){
 创建系统托盘菜单动作*/
 void WowClip::createSysTrayActions()
 {
-
     QAction *action_quit = new QAction(this);
-
-    action_quit->setIcon(QIcon("://out"));
-
+    action_quit->setIcon(QIcon("://shutdown"));
     action_quit->setText(tr("退出"));
-
     menu_tray->addAction(action_quit);
-
     connect(action_quit, SIGNAL(triggered(bool)), qApp, SLOT(quit()));
+    QAction *action_home = new QAction(this);
+    action_home->setIcon(QIcon("://home"));
+    action_home->setText(tr("主页"));
+    menu_tray->addAction(action_home);
+    connect(action_home, SIGNAL(triggered(bool)), this, SLOT(showHome()));
 }
 void WowClip:: hotKey_Ctrlq( ){
     if  (isShow){
@@ -317,10 +326,42 @@ void WowClip::mouseReleaseEvent(QMouseEvent *event)
 void WowClip::on_listWidget_currentItemChanged(QListWidgetItem *current, QListWidgetItem *previous)
 {
     if(current){
-        qDebug()<<"颜色"<<current->backgroundColor().rgb();
+        qDebug()<<"color:"<<current->backgroundColor().rgb();
     }
     if(previous){
         qDebug()<<previous->backgroundColor();
+    }
+}
+
+/**
+ * @brief WowClip::on_closeButton_clicked
+ */
+void WowClip::on_closeButton_clicked()
+{
+    this->hide();
+    isShow = false;
+}
+/**
+ * @brief WowClip::showHome
+ */
+void WowClip:: showHome(){
+    if(!isShow){
+        this->show();
+        isShow = true;
+    }
+}
+/**
+ * @brief 系统托盘点击事件
+ * @param reason
+ */
+void WowClip::on_activatedSysTrayIcon(QSystemTrayIcon::ActivationReason reason)
+{
+    switch(reason){
+    case QSystemTrayIcon::DoubleClick:
+        this->showHome();
+        break;
+    default:
+        break;
     }
 }
 

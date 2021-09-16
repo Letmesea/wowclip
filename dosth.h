@@ -14,6 +14,7 @@
 #include<QHBoxLayout>
 #include<QTextBrowser>
 #include <QDebug>
+#include <QScrollBar>
 /**
  * @brief 可编辑的项
  */

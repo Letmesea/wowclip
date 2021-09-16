@@ -8,8 +8,19 @@
         <file alias="mlogo4">mlogo4.png</file>
         <file alias="mlogo5">mlogo5.png</file>
         <file alias="out">out.png</file>
+        <file alias="shutdown">icon/icons8-shutdown-30.png</file>
+        <file alias="close">icon/icons8-macos-close-30.png</file>
+        <file alias="close1">icon/icons8-close-window-50 (1).png</file>
+        <file alias="home">icon/icons8-home-50.png</file>
     </qresource>
     <qresource prefix="/menu_tray">
         <file alias="home">icon/home_16px_1181940_easyicon.net.png</file>
+    </qresource>
+    <qresource prefix="/css">
+        <file alias="scrollbar">qss/scrollbar.qss</file>
+    </qresource>
+    <qresource prefix="/ty">
+        <file alias="down">icon/icons8-down-24.png</file>
+        <file alias="up">icon/icons8-up-24.png</file>
     </qresource>
 </RCC>

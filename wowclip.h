@@ -17,6 +17,7 @@
 #include <cstring>
 #include <QtNetwork/QtNetwork>
 #include <QDesktopWidget>
+#include <QScrollBar>
 
 QT_BEGIN_NAMESPACE
 namespace Ui { class WowClip; }
@@ -59,5 +60,11 @@ private slots:
                                            QListWidgetItem *previous);
      void saveData(const QString &data);
      void slot_replyFinished(QNetworkReply* reply);
+     //关闭按钮
+     void on_closeButton_clicked();
+     //显示主页
+     void showHome();
+     //系统托盘点击事件
+     void on_activatedSysTrayIcon(QSystemTrayIcon::ActivationReason reason);
 };
 #endif // WOWCLIP_H
