@@ -97,9 +97,9 @@ padding:0px;
       <widget class="QListWidget" name="listWidget">
        <property name="geometry">
         <rect>
-         <x>0</x>
+         <x>7</x>
          <y>29</y>
-         <width>448</width>
+         <width>441</width>
          <height>461</height>
         </rect>
        </property>
@@ -115,9 +115,9 @@ background-color: #E8E8E8;opacity:0.5
       <widget class="QPushButton" name="closeButton">
        <property name="geometry">
         <rect>
-         <x>400</x>
+         <x>420</x>
          <y>0</y>
-         <width>51</width>
+         <width>31</width>
          <height>31</height>
         </rect>
        </property>

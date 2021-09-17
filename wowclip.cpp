@@ -30,10 +30,102 @@ WowClip::WowClip(QWidget *parent)
     //系统托盘事件
     connect(system_tray,SIGNAL(activated(QSystemTrayIcon::ActivationReason)),
             this,SLOT(on_activatedSysTrayIcon(QSystemTrayIcon::ActivationReason)));
-//    QFile file("://css/scrollbar");
-//    file.open(QFile::ReadOnly);
-//    ui->listWidget->verticalScrollBar()->setStyleSheet(file.readAll());
-//    file.close();
+
+    ui->listWidget->setVerticalScrollMode(QAbstractItemView::ScrollPerPixel);
+    ui->listWidget->setVerticalScrollBar(new AnimatedScrollBar(ui->listWidget));
+ui->listWidget->setStyleSheet(
+            "QScrollBar:vertical"
+            "{"
+               "width:22px;"
+               "background:rgba(0,0,0,0%);"
+               "margin:5px,0px,5px,0px;"
+               "padding-top:9px;"
+               "padding-bottom:9px;"
+            "}"
+            "QScrollBar::handle:vertical"
+            "{"
+            "width:5px;"
+            "background:rgba(0,0,0,25%);"
+            " border-radius:4px;"
+            "min-height:40px;"
+            "}"
+            "QScrollBar::handle:vertical:hover"
+            "{"
+            "width:15px;"
+            "background:rgba(0,0,0,50%);"
+            " border-radius:4px;"
+            "min-height:40;"
+            "}"
+           "QScrollBar::add-line:vertical,"
+           "QScrollBar::sub-line:vertical{"
+           "height:0px;"
+           "}"
+           "QScrollBar::add-line,"
+           "QScrollBar::add-page{"
+           "}"
+           "QScrollBar::sub-line,"
+           "QScrollBar::sub-page{"
+           "}"
+           "QAbstractScrollArea::corner{"
+           "background: transparent;"
+           "border: none;"
+           "}"
+           "AnimatedScrollBar{"
+           "qproperty-expandedWidth:15;"
+           "}"
+         );
+    //    ui->listWidget->verticalScrollBar()->setStyleSheet("QScrollBar"
+//                                                   "{"
+//                                                   "width:22px;"
+//                                                   "background:rgba(0,0,0,0%);"
+//                                                   "margin:5px,0px,5px,0px;"
+//                                                   "padding-top:9px;"
+//                                                   "padding-bottom:9px;"
+//                                                   "}"
+//                                                   "QScrollBar::handle:vertical"
+//                                                   "{"
+//                                                   "width:5px;"
+//                                                   "background:rgba(0,0,0,25%);"
+//                                                   " border-radius:4px;"
+//                                                   "min-height:40px;"
+//                                                   "}"
+//                                                   "QScrollBar::handle:vertical:hover"
+//                                                   "{"
+//                                                   "width:15px;"
+//                                                   "background:rgba(0,0,0,50%);"
+//                                                   " border-radius:4px;"
+//                                                   "min-height:40;"
+//                                                   "}"
+//                                                   "QScrollBar::add-line:vertical"
+//                                                   "{"
+//                                                   "height:16px;width:15px;"
+
+//                                                   "subcontrol-position:bottom;"
+//                                                   "}"
+//                                                   "QScrollBar::sub-line:vertical"
+//                                                   "{"
+//                                                   "height:16px;width:15px;"
+
+//                                                   "subcontrol-position:top;"
+//                                                   "}"
+//                                                   "QScrollBar::add-line:vertical:hover"
+//                                                   "{"
+//                                                   "height:16px;width:15px;"
+
+//                                                   "subcontrol-position:bottom;"
+//                                                   "}"
+//                                                   "QScrollBar::sub-line:vertical:hover"
+//                                                   "{"
+//                                                   "height:16px;width:15px;"
+
+//                                                   "subcontrol-position:top;"
+//                                                   "}"
+//                                                   "QScrollBar::add-page:vertical,QScrollBar::sub-page:vertical"
+//                                                   "{"
+//                                                   "background:rgba(0,0,0,10%);"
+//                                                   "border-radius:4px;"
+//                                                   "}");
+
 
 //    this->move ((QApplication::desktop()->width() - this->width())/2+100,(QApplication::desktop()->height() - this->height())/2);
 //    addItem();
@@ -363,5 +455,73 @@ void WowClip::on_activatedSysTrayIcon(QSystemTrayIcon::ActivationReason reason)
     default:
         break;
     }
+}
+//varAnima: 变量动画
+//preferWidth: 临时记录动态的滚动条宽度
+//_expandedWidth: 滚动条变粗后的宽度
+AnimatedScrollBar::AnimatedScrollBar(QWidget *parent):
+    QScrollBar(parent)
+{
+    varAnima = new QVariantAnimation(this); //创建动画
+    varAnima->setDuration(150);
+    connect(varAnima, &QVariantAnimation::valueChanged, this, [this](const QVariant &val){
+        //valueChanged时，动画不一定在运行,需要约束
+        if(varAnima->state() == QAbstractAnimation::Running)
+        {
+            preferWidth = val.toInt();
+            updateGeometry();
+        }
+    });
+}
+
+QSize AnimatedScrollBar::sizeHint() const
+{
+    QSize tmp = QScrollBar::sizeHint(); //样式指定的宽度值，可以通过默认的sizeHint获取
+    if(this->orientation() == Qt::Horizontal)
+    {
+        return QSize(tmp.width(), preferWidth); //仅改变宽度,实际由于布局的存在，长度值并不重要
+    }
+    return QSize(preferWidth, tmp.height());
+}
+
+void AnimatedScrollBar::setExpandedWidth(int val)
+{
+    _expandedWidth = val;
+}
+
+bool AnimatedScrollBar::event(QEvent *e)
+{
+    if(e->type() == QEvent::Polish)
+    {
+        //初始化preferWidth，也可以在第一次sizeHint()被调用时初始化
+        QSize tmp = QScrollBar::sizeHint();
+        preferWidth = 12;
+//        preferWidth = this->orientation() == Qt::Horizontal ? tmp.height() : tmp.width();
+    }
+    else if(e->type() == QEvent::HoverEnter)
+    {
+        if(varAnima->state() == QAbstractAnimation::Running)
+            varAnima->stop();
+
+//        varAnima->setStartValue(preferWidth);
+//        varAnima->setEndValue(_expandedWidth);
+        varAnima->setStartValue(12);
+        varAnima->setEndValue(22);
+        varAnima->start();
+    }
+    else if(e->type() == QEvent::HoverLeave)
+    {
+        if(varAnima->state() == QAbstractAnimation::Running)
+            varAnima->stop();
+
+        QSize tmp = QScrollBar::sizeHint();
+        int  normalWidth = this->orientation() == Qt::Horizontal ? tmp.height() : tmp.width();
+//        varAnima->setStartValue(preferWidth);
+//        varAnima->setEndValue(normalWidth);
+        varAnima->setStartValue(22);
+        varAnima->setEndValue(12);
+        varAnima->start();
+    }
+    return QScrollBar::event(e);
 }
 

@@ -67,4 +67,23 @@ private slots:
      //系统托盘点击事件
      void on_activatedSysTrayIcon(QSystemTrayIcon::ActivationReason reason);
 };
+class AnimatedScrollBar : public QScrollBar
+{
+    Q_OBJECT
+    Q_PROPERTY(int expandedWidth READ expandedWidth WRITE setExpandedWidth)
+public:
+    AnimatedScrollBar(QWidget *parent = Q_NULLPTR);
+    QSize sizeHint() const;
+    int expandedWidth(){
+        return _expandedWidth;
+    }
+    void setExpandedWidth(int val);
+
+protected:
+    bool event(QEvent *e);
+private:
+    QVariantAnimation *varAnima;
+    int preferWidth = 15;
+    int _expandedWidth = 22;
+};
 #endif // WOWCLIP_H
