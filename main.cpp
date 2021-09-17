@@ -27,6 +27,22 @@ int main(int argc, char *argv[])
 //    qDebug()<<s.find("7");
 //    qDebug()<<s.npos;
     QApplication a(argc, argv);
+    a.setStyleSheet("QListView{"
+                    "border:1px solid #00BFFF;"
+                    "outline:0;"
+                    "}"
+                    "QListView::item{"
+                    "border:0px;"
+                    "padding:5px 5px;"
+                    "}"
+                    "QListView::item:hover{"
+                    "background:#DEF7FF;"
+                    "border:1px solid #DC143C;"
+                    "}"
+                    "QListView::item:selected{"
+                    "background:#00ACE6;"
+                    "color:white;"
+                    "}");
     WowClip w;
     w.hide();
 
