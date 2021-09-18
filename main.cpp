@@ -36,8 +36,8 @@ int main(int argc, char *argv[])
                     "padding:5px 5px;"
                     "}"
                     "QListView::item:hover{"
-                    "background:#DEF7FF;"
-                    "border:1px solid #DC143C;"
+
+                    "border:2px solid #DEF7FF;"
                     "}"
                     "QListView::item:selected{"
                     "background:#00ACE6;"
